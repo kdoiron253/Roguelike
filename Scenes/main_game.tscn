@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cvhu6pkdvx4jy"]
+
+[ext_resource type="PackedScene" uid="uid://w7q3617ssvlv" path="res://Scenes/dungeon.tscn" id="1_o5drb"]
+[ext_resource type="PackedScene" uid="uid://c1gha08keo1ge" path="res://Scenes/Player/player.tscn" id="2_elpqu"]
+
+[node name="MainGame" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("2_elpqu")]
+position = Vector2(8, 8)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="Dungeon" parent="." instance=ExtResource("1_o5drb")]

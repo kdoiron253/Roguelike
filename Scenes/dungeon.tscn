@@ -401,6 +401,7 @@ texture = ExtResource("1_610s4")
 12:7/0 = 0
 12:7/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:7/0/physics_layer_0/angular_velocity = 0.0
+12:7/0/custom_data_0 = true
 13:7/0 = 0
 13:7/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 13:7/0/physics_layer_0/angular_velocity = 0.0
@@ -596,6 +597,7 @@ texture = ExtResource("1_610s4")
 11:11/0 = 0
 11:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 11:11/0/physics_layer_0/angular_velocity = 0.0
+11:11/0/custom_data_0 = true
 12:11/0 = 0
 12:11/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:11/0/physics_layer_0/angular_velocity = 0.0
@@ -701,6 +703,7 @@ texture = ExtResource("1_610s4")
 12:13/0 = 0
 12:13/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 12:13/0/physics_layer_0/angular_velocity = 0.0
+12:13/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, -8, 8, 8, 8, 8, -8)
 13:13/0 = 0
 13:13/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 13:13/0/physics_layer_0/angular_velocity = 0.0
@@ -890,6 +893,8 @@ texture = ExtResource("1_610s4")
 
 [sub_resource type="TileSet" id="TileSet_0oqs4"]
 physics_layer_0/collision_layer = 1
+custom_data_layer_0/name = "Walkable"
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_12r7w")
 
 [node name="Dungeon" type="TileMap"]
@@ -897,3 +902,7 @@ tile_set = SubResource("TileSet_0oqs4")
 format = 2
 layer_0/name = "Ground"
 script = ExtResource("2_d7t4q")
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Items" type="Node2D" parent="."]

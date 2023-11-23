@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1gha08keo1ge"]
+
+[ext_resource type="Script" path="res://Scenes/Player/Player.gd" id="1_qlymr"]
+[ext_resource type="Texture2D" uid="uid://cr56ord3fnsgr" path="res://Resources/MaskFrog/SpriteSheet.png" id="2_kmrdc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_c8eff"]
+radius = 7.0
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_qlymr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_kmrdc")
+hframes = 4
+vframes = 7
+
+[node name="Camera2D" type="Camera2D" parent="Sprite2D"]
+position = Vector2(0, 1)
+zoom = Vector2(2, 2)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_c8eff")
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, 16)
+collide_with_areas = true

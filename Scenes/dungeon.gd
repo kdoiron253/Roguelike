@@ -3,6 +3,11 @@ extends TileMap
 # most of this is from abitawake.com with updates to work with
 # newer engine and to fit in with the needed game idea
 
+# TODO: add in player and enemy scenes and randomly place them
+var player_scene : PackedScene = preload("res://Scenes/Player/player.tscn")
+var enemy_scene : PackedScene = preload("res://Scenes/Enemies/axolotl.tscn")
+var coin_scene : PackedScene = preload("res://Scenes/Items/coin.tscn")
+
 @export var map_width : int = 80
 @export var map_height : int = 50
 @export var min_room_size : int = 8
@@ -13,6 +18,10 @@ extends TileMap
 var LAYER : int = 0  # the default layer is ground
 var ATLAS : int = 0  # the default tileset
 
+var enemy_number = 20
+
+# TODO: place exit in another random room
+# TODO: add in monsters and treasure to the rooms (leaves)
 # TODO: random floor and roof tiles to chose from
 var ROOF = Vector2i(12, 13)  # was 12, 13
 var GROUND = Vector2i(12, 7)
@@ -21,6 +30,8 @@ var tree := {}
 var leaves := []
 var leaf_id = 0
 var rooms := []
+
+var room_tiles := []
 
 
 func _ready():
@@ -37,7 +48,15 @@ func generate():
 	
 	# if a room wasn't made, leaving for the maze factor
 	# tested and made to work
-	# clear_deadends()
+	clear_deadends()
+	place_player()
+	for i in range(enemy_number):
+		place_enemies()
+	
+	# TODO: loop through list of items to place and place
+	place_items()
+	
+	# TODO: place exit and make it active only when all items picked up
 
 
 func fill_roof():
@@ -73,7 +92,7 @@ func create_leaf(parent_id):
 	
 	# randonly split horizonally or vertically
 	# horizontally if not enough width, vertically if not enough height
-	var split_type = choose(["h", "w"])
+	var split_type = choose(["h", "v"])
 	if (min_room_factor * w < min_room_size): split_type = "h"
 	elif (min_room_factor * h < min_room_size): split_type = "v"
 	
@@ -121,13 +140,13 @@ func create_leaf(parent_id):
 
 # create a room in leaf only 75% of the time
 func create_rooms():
-	for leaf_id in tree:
-		var leaf = tree[leaf_id]
+	for leafid in tree:
+		var leaf = tree[leafid]
 		if (leaf.has("l")): continue  # if children, no rooms built
 		
 		if chance(75):
 			var room := {}
-			room.id = leaf_id
+			room.id = leafid
 			room.w = randi_range(min_room_size, leaf.w) - 1
 			room.h = randi_range(min_room_size, leaf.h) - 1
 			room.x = leaf.x + floor((leaf.w - room.w) / 2) + 1
@@ -164,11 +183,11 @@ func connect_leaves(leaf1, leaf2):
 	
 	# vertical corridor
 	if (leaf1.split == "h"):
-		x -= floor(w/2) + 1
+		x -= floor(w/2.0) + 1
 		h = abs(leaf1.center.y - leaf2.center.y)
 	else:
 		# horizontal corridor
-		y -= floor(h/2) + 1
+		y -= floor(h/2.0) + 1
 		w = abs(leaf1.center.x - leaf2.center.x)
 	
 	# make sure it is within the map
@@ -182,19 +201,55 @@ func connect_leaves(leaf1, leaf2):
 				set_cell(LAYER, pos, ATLAS, GROUND)
 
 
-func clear_deadends():
-	var done = false
+# TODO: place character in a random room
+func place_player():
+	# get random location, place player
+	var player = player_scene.instantiate() as CharacterBody2D
+	var tile = random_location()
+	var pos = map_to_local(tile)
+	# debug purposes: 
+	print(tile, pos)
+	player.position = pos
+	$".".add_child(player)
+
+# TODO: place enemies
+func place_enemies():
+	# get random location, place x number of enemies
+	var enemy = enemy_scene.instantiate() as Area2D
+
+	var tile = random_location()
+	var pos = map_to_local(tile)
+	enemy.position = pos
+	$Enemies.add_child(enemy)
+
+
+# TODO: place items
+func place_items():
+	var item = coin_scene.instantiate() as Area2D
 	
-	while !done:
-		done = true
+	var tile = random_location()
+	var pos = map_to_local(tile)
+	item.position = pos
+	$Items.add_child(item)
+
+
+func random_location():
+	# get a random room from the room list
+	var random_number = randi() % room_tiles.size()
+	# return location
+	return room_tiles[random_number]
+
+
+func clear_deadends():
+	for cell in get_used_cells(LAYER):
+		if (get_cell_atlas_coords(LAYER, cell) != GROUND): continue
 		
-		for cell in get_used_cells(LAYER):
-			if (get_cell_atlas_coords(LAYER, cell) != GROUND): continue
-			
-			var roof_count = check_nearby(cell.x, cell.y)
-			if roof_count == 3:
-				set_cell(LAYER, cell, ATLAS, ROOF)
-				done = false
+		var roof_count = check_nearby(cell.x, cell.y)
+		if roof_count < 2:
+			room_tiles.append(cell)
+		# to get rid of dead end halls
+		#if roof_count == 3:
+		#	set_cell(LAYER, cell, ATLAS, ROOF)
 
 
 func check_nearby(x, y):

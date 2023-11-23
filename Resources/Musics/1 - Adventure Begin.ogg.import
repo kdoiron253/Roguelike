@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dshmruik24gf0"
+path="res://.godot/imported/1 - Adventure Begin.ogg-80f5c7e49c9e6cbbaed127f86303c8b9.oggvorbisstr"
+
+[deps]
+
+source_file="res://Resources/Musics/1 - Adventure Begin.ogg"
+dest_files=["res://.godot/imported/1 - Adventure Begin.ogg-80f5c7e49c9e6cbbaed127f86303c8b9.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
