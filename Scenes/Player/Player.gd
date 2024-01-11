@@ -5,7 +5,9 @@ extends CharacterBody2D
 @onready var ray_cast = $RayCast2D
 
 var is_moving = false
+var sword_damage = 10
 
+# adapted from RetroBright YouTube tutorial (2D movement in godot 4 using tilemap)
 
 func _physics_process(_delta):
 	if is_moving == false: return
@@ -15,6 +17,7 @@ func _physics_process(_delta):
 		return
 	
 	sprite_2d.global_position = sprite_2d.global_position.move_toward(global_position, 1)
+	Globals.player_pos = global_position
 
 
 func _process(_delta):
@@ -24,6 +27,13 @@ func _process(_delta):
 	elif Input.is_action_pressed("Right"): move(Vector2.RIGHT)
 	elif Input.is_action_pressed("Up"): move(Vector2.UP)
 	elif Input.is_action_pressed("Down"): move(Vector2.DOWN)
+	
+	if (Input.is_action_pressed("Primary Action")):
+		# TODO: attack and cause damage
+		var sword = Globals.sword_scene.instantiate()
+		sword.damage = sword_damage
+		sword.position = position + Vector2(3, 0)
+		$".".add_child(sword)
 
 
 func move(direction : Vector2):
@@ -47,3 +57,7 @@ func move(direction : Vector2):
 	is_moving = true
 	global_position = tile_map.map_to_local(target_tile)
 	sprite_2d.global_position = tile_map.map_to_local(current_tile)
+
+
+func hit():
+	Globals.health -= 5

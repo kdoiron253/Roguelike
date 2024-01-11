@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://w7q3617ssvlv"]
+[gd_scene load_steps=6 format=3 uid="uid://w7q3617ssvlv"]
 
 [ext_resource type="Texture2D" uid="uid://vhae6paebdyw" path="res://Resources/TilesetInteriorFloor.png" id="1_610s4"]
-[ext_resource type="Script" path="res://Scenes/dungeon.gd" id="2_d7t4q"]
+[ext_resource type="Script" path="res://Scenes/Main/dungeon.gd" id="2_bcnua"]
+[ext_resource type="PackedScene" uid="uid://c2fbfl8aq1b13" path="res://Scenes/UI/hud.tscn" id="3_aff18"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_12r7w"]
 texture = ExtResource("1_610s4")
@@ -901,7 +902,10 @@ sources/0 = SubResource("TileSetAtlasSource_12r7w")
 tile_set = SubResource("TileSet_0oqs4")
 format = 2
 layer_0/name = "Ground"
-script = ExtResource("2_d7t4q")
+script = ExtResource("2_bcnua")
+
+[node name="HUD" parent="." instance=ExtResource("3_aff18")]
+layer = 2
 
 [node name="Enemies" type="Node2D" parent="."]
 

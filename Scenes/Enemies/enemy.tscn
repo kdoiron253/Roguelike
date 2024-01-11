@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://2kq0wh2imq4e"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/enemy.gd" id="1_nfrvu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvfex"]
+size = Vector2(14, 15)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fuide"]
+radius = 10.0499
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_fmv11"]
+radius = 49.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_nfrvu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+hframes = 4
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_uvfex")
+
+[node name="AttackArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("CircleShape2D_fuide")
+
+[node name="NoticeArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NoticeArea" groups=["Enemy"]]
+shape = SubResource("CircleShape2D_fmv11")
+
+[connection signal="body_entered" from="AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="." method="_on_attack_area_body_exited"]
+[connection signal="body_entered" from="NoticeArea" to="." method="_on_notice_area_body_entered"]
+[connection signal="body_exited" from="NoticeArea" to="." method="_on_notice_area_body_exited"]

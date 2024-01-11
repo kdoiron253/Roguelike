@@ -6,6 +6,7 @@
 radius = 5.0
 
 [node name="Coin" type="Area2D"]
+collision_layer = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_hxoc8")

@@ -215,7 +215,7 @@ func place_player():
 # TODO: place enemies
 func place_enemies():
 	# get random location, place x number of enemies
-	var enemy = enemy_scene.instantiate() as Area2D
+	var enemy = enemy_scene.instantiate() as CharacterBody2D
 
 	var tile = random_location()
 	var pos = map_to_local(tile)
